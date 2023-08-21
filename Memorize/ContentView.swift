@@ -9,25 +9,23 @@ import SwiftUI
 
 // ": View" means "behaves like a View"
 struct ContentView: View {
-	// ': Array<String>' or '[String]'
-	let emojis = [
-		[["halloween", "🎃"], ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]],
-		[["christmas", "🎁"], ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]],
-		[["animals", "🐰"], ["🐰", "🐶", "🐦", "🐧", "🦎", "🐱", "🐴", "🐟", "🐠", "🦜"]]
+	let themes = [
+		theme(name: "halloween", symbol: "🎃", color: Color.orange, emojiSet: ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]),
+		theme(name: "christmas", symbol: "🎁", color: Color.red, emojiSet: ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]),
+		theme(name: "animals", symbol: "🐰", color: Color.green, emojiSet: ["🐰", "🐶", "🐦", "🐧", "🦎", "🐱", "🐴", "🐟", "🐠", "🦜"])
 	]
-	let themeColors = [Color.orange, Color.blue, Color.green]
 	@State var currentSet = ["👻", "🕸️", "🧟", "🕷️", "🧌", "🧌", "🕸️", "💀", "👹", "👻", "👹", "🧟", "😈", "😈", "🕷️", "💀"]
-	@State var emojiSet = -1
+	@State var themeNum = -1
 	
 	var body: some View {
 		VStack {
 			Text("Memorize!")
 				.font(.largeTitle)
 			
-			if emojiSet != -1 {
+			if themeNum != -1 {
 				ScrollView {
 					cards
-						.foregroundColor(themeColors[emojiSet])
+						.foregroundColor(themes[themeNum].color)
 				}
 			} else {
 				emojiSelect
@@ -41,17 +39,18 @@ struct ContentView: View {
 	
 	var emojiSelect: some View {
 		HStack {
-			ForEach(0..<emojis.count, id: \.self) { index in
+			ForEach(0..<themes.count, id: \.self) { index in
 				Button(action: {
-					emojiSet = index
+					themeNum = index
 					// get the selected emoji set and shuffle them
 					currentSet = shuffledSet()
 				}, label: {
 					VStack {
-						Text(emojis[index][0][1])
+						Text(themes[index].symbol)
 							.font(.title)
-						Text(emojis[index][0][0])
+						Text(themes[index].name)
 							.font(.caption2)
+							.foregroundColor(themes[index].color)
 					}
 				})
 			}
@@ -59,7 +58,7 @@ struct ContentView: View {
 	}
 	
 	func shuffledSet() -> [String] {
-		var newSet = emojis[emojiSet][1].shuffled()
+		var newSet = themes[themeNum].emojiSet.shuffled()
 		while newSet.count > 8 {
 			newSet.removeFirst()
 		}
@@ -76,19 +75,19 @@ struct ContentView: View {
 	}
 }
 
-//class theme {
-//	var name: String
-//	var symbol: String
-//	var color: Color = .accentColor
-//	var emojiSet: [String]
-//
-//	init(name: String, symbol: String, color: Color, emojiSet: [String]) {
-//		self.name = name
-//		self.symbol = symbol
-//		self.color = color
-//		self.emojiSet = emojiSet
-//	}
-//}
+class theme {
+	var name: String
+	var symbol: String
+	var color: Color = .accentColor
+	var emojiSet: [String]
+
+	init(name: String, symbol: String, color: Color, emojiSet: [String]) {
+		self.name = name
+		self.symbol = symbol
+		self.color = color
+		self.emojiSet = emojiSet
+	}
+}
 
 struct CardView: View {
 	let content: String
