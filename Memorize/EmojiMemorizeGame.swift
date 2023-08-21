@@ -22,7 +22,7 @@ class EmojiMemorizeGame: ObservableObject {
 	
 	@Published private var game = createMemoryGame()
 	
-	// MARK: - Gets
+	// MARK: - Operations
 	
 	var getCards: Array<MemorizeGame<String>.Card> {
 		game.cards
@@ -40,5 +40,9 @@ class EmojiMemorizeGame: ObservableObject {
 	
 	func choose(_ card: MemorizeGame<String>.Card) {
 		game.choose(card)
+	}
+	
+	func reset() {
+		game = EmojiMemorizeGame.createMemoryGame()
 	}
 }

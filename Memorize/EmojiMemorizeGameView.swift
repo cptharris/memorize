@@ -24,16 +24,22 @@ struct EmojiMemorizeGameView: View {
 			Button("Shuffle") {
 				gameKeeper.shuffle()
 			}
+			Button("Reset") {
+				gameKeeper.reset()
+			}
 		}
 		.padding(10)
 	}
 	
 	var cardsView: some View {
 		LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 0)], spacing: 0) {
-			ForEach(gameKeeper.getCards.indices, id: \.self) { index in
-				CardView(gameKeeper.getCard(index))
+			ForEach(gameKeeper.getCards) { card in
+				CardView(card)
 					.aspectRatio(2/3, contentMode: .fit)
 					.padding(2)
+					.onTapGesture {
+						gameKeeper.choose(card)
+					}
 			}
 		}
 	}
@@ -61,6 +67,7 @@ struct CardView: View {
 			.opacity(card.isFaceUp ? 1 : 0)
 			base.fill().opacity(card.isFaceUp ? 0 : 1)
 		}
+		.opacity(card.isMatched ? 0 : 1)
 	}
 }
 
