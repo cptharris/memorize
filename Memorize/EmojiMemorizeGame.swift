@@ -12,16 +12,16 @@ class EmojiMemorizeGame: ObservableObject {
 	/// Makes a new Memorize Game of Card Content String.
 	/// The emoji set is drawn from the available themes and emojis are randomly selected.
 	private static func createMemoryGame() -> MemorizeGame<String> {
-		// get a random theme, assume there are themes in the list
-		theme = MemorizeGameTheme<String>(themes.randomElement()!)
+		// get a random theme, protect against no themes available
+		theme = MemorizeGameTheme<String>(themes.randomElement() ?? Theme("", 0, numPairs: 0, []))
 		// return a new memorize game with the number of pairs and a shuffled, random selection of the available emojis
 		return MemorizeGame(numberOfPairs: theme.numPairs) {
-			return theme.contentSet.indices.contains($0) ? theme.contentSet[$0] : "⚠️"
+			return theme.contentSet.indices.contains($0) ? theme.contentSet[$0] : nil
 		}
 	}
 	
 	@Published private var game = createMemoryGame()
-	private static var theme = MemorizeGameTheme<String>(themes.randomElement()!)
+	private static var theme = MemorizeGameTheme<String>()
 	
 	// MARK: - Operations
 	
@@ -67,8 +67,6 @@ class EmojiMemorizeGame: ObservableObject {
 		Theme<String>("animals", 110, numPairs: 8, ["🐰", "🐶", "🐦", "🐧", "🦎", "🐱", "🐴", "🐟", "🐠", "🦜"])
 	]
 	
-	/// Holds a Theme for the Memorize Game.
-	/// Includes a name String, Color, number of pairs, and emoji set.
 	class Theme<CardContent> {
 		let name: String
 		let hue: Int

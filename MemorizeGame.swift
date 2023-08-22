@@ -11,12 +11,15 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 	private(set) var cards: Array<Card>
 	private(set) var score = 0
 	
-	init(numberOfPairs: Int, cardContentFactory: (Int) -> CardContent) {
+	init(numberOfPairs: Int, cardContentFactory: (Int) -> CardContent?) {
 		cards = []
 		for pairIndex in 0..<max(2, numberOfPairs) {
-			let content = cardContentFactory(pairIndex)
-			cards.append(Card(content: content, id: "\(pairIndex+1)a"))
-			cards.append(Card(content: content, id: "\(pairIndex+1)b"))
+			if let content = cardContentFactory(pairIndex) {
+				cards.append(Card(content: content, id: "\(pairIndex+1)a"))
+				cards.append(Card(content: content, id: "\(pairIndex+1)b"))
+			} else {
+				break
+			}
 		}
 		shuffle()
 	}
@@ -25,7 +28,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		// get indices of cards that are face up, then get the one index if there is only one
 		get { cards.indices.filter { cards[$0].isFaceUp }.only }
 		// look at each card. if the new only face up card is the current card, set the current card to face up. set everything else to face down
-		set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
+		set { cards.indices.forEach { cards[$0].set(toFaceUp: newValue == $0) } }
 	}
 	
 	var gameIsComplete: Bool {
@@ -46,6 +49,9 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 						cards[chosenIndex].isMatched = true
 						cards[potentialMatchIndex].isMatched = true
 						score += 2
+						if !cards[chosenIndex].wasSeen && !cards[potentialMatchIndex].wasSeen {
+							score += 1
+						}
 					} else if cards[chosenIndex].wasSeen {
 						score -= 1
 					}
@@ -54,7 +60,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 					indexOfTheOneAndOnlyFaceUpCard = chosenIndex
 				}
 				// show the chosen card
-				cards[chosenIndex].show()
+				cards[chosenIndex].set(toFaceUp: true)
 			}
 		}
 	}
@@ -71,9 +77,15 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not") been seen"
 		}
 		
-		mutating func show() {
-			isFaceUp = true
-			wasSeen = true
+		mutating func set(toFaceUp: Bool) {
+			if toFaceUp {
+				isFaceUp = true
+			} else {
+				if isFaceUp {
+					wasSeen = true
+				}
+				isFaceUp = false
+			}
 		}
 		
 		var isFaceUp = false
