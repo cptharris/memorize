@@ -12,27 +12,25 @@ class EmojiMemorizeGame: ObservableObject {
 	/// Makes a new Memorize Game of Card Content String.
 	/// The emoji set is drawn from the available themes and emojis are randomly selected.
 	private static func createMemoryGame() -> MemorizeGame<String> {
-		// get a random theme
-		let chosenTheme = themes[Int.random(in: themes.indices)]
-		// get the emojiSet from the theme and shuffle it
-		let emojiSet = chosenTheme.emojiSet.shuffled()
-		// return a new memorize game with the theme name, color, and number of pairs
-		// and a shuffled, random selection of the available emojis
-		return MemorizeGame(chosenTheme.name, chosenTheme.color, numberOfPairs: chosenTheme.numPairs) {
-			return emojiSet.indices.contains($0) ? emojiSet[$0] : "⚠️"
+		// get a random theme, assume there are themes in the list
+		theme = MemorizeGameTheme<String>(themes.randomElement()!)
+		// return a new memorize game with the number of pairs and a shuffled, random selection of the available emojis
+		return MemorizeGame(numberOfPairs: theme.numPairs) {
+			return theme.contentSet.indices.contains($0) ? theme.contentSet[$0] : "⚠️"
 		}
 	}
 	
 	@Published private var game = createMemoryGame()
+	private static var theme = MemorizeGameTheme<String>(themes.randomElement()!)
 	
 	// MARK: - Operations
 	
 	var themeName: String {
-		game.themeName
+		EmojiMemorizeGame.theme.name.uppercased()
 	}
 	
 	var themeColor: Color {
-		game.themeColor
+		Color(hue: Double(EmojiMemorizeGame.theme.hue)/360, saturation: 1, brightness: 0.8)
 	}
 	
 	var gameScore: Int {
@@ -45,10 +43,6 @@ class EmojiMemorizeGame: ObservableObject {
 	
 	var getCards: Array<MemorizeGame<String>.Card> {
 		game.cards
-	}
-	
-	func getCard(_ index: Int) -> MemorizeGame<String>.Card {
-		game.cards[index]
 	}
 	
 	// MARK: - Intents
@@ -68,24 +62,24 @@ class EmojiMemorizeGame: ObservableObject {
 	// MARK: - THEME
 	
 	private static let themes = [
-		Theme("halloween", Color.orange, numPairs: 8, ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]),
-		Theme("christmas", Color.red, numPairs: 8, ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]),
-		Theme("animals", Color.green, numPairs: 8, ["🐰", "🐶", "🐦", "🐧", "🦎", "🐱", "🐴", "🐟", "🐠", "🦜"])
+		Theme<String>("halloween", 30, numPairs: 8, ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]),
+		Theme<String>("christmas", 0, numPairs: 8, ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]),
+		Theme<String>("animals", 110, numPairs: 8, ["🐰", "🐶", "🐦", "🐧", "🦎", "🐱", "🐴", "🐟", "🐠", "🦜"])
 	]
 	
 	/// Holds a Theme for the Memorize Game.
 	/// Includes a name String, Color, number of pairs, and emoji set.
-	class Theme {
+	class Theme<CardContent> {
 		let name: String
-		let color: Color
+		let hue: Int
 		let numPairs: Int
-		let emojiSet: [String]
+		let contentSet: [CardContent]
 		
-		init(_ name: String, _ color: Color, numPairs: Int, _ emojiSet: [String]) {
+		init(_ name: String, _ hue: Int, numPairs: Int, _ contentSet: [CardContent]) {
 			self.name = name
-			self.color = color
+			self.hue = hue
 			self.numPairs = numPairs
-			self.emojiSet = emojiSet
+			self.contentSet = contentSet
 		}
 	}
 }

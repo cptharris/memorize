@@ -6,31 +6,19 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct MemorizeGame<CardContent> where CardContent: Equatable {
-	let themeName: String
-	let themeColor: Color
 	private(set) var cards: Array<Card>
 	private(set) var score = 0
 	
-	/// create the cards array
-	/// - Parameters:
-	///   - numberOfPairs: number of pairs to create in the array, enforces at least 2
-	///   - cardContentFactory: function that returns CardContent values, given an index
-	///   - themeName: name for the theme in use
-	///   - themeColor: color for the theme in use
-	init(_ themeName: String, _ themeColor: Color, numberOfPairs: Int, cardContentFactory: (Int) -> CardContent) {
-		self.themeName = themeName
-		self.themeColor = themeColor
-		
+	init(numberOfPairs: Int, cardContentFactory: (Int) -> CardContent) {
 		cards = []
 		for pairIndex in 0..<max(2, numberOfPairs) {
 			let content = cardContentFactory(pairIndex)
 			cards.append(Card(content: content, id: "\(pairIndex+1)a"))
 			cards.append(Card(content: content, id: "\(pairIndex+1)b"))
 		}
-		cards.shuffle()
+		shuffle()
 	}
 	
 	var indexOfTheOneAndOnlyFaceUpCard: Int? {
