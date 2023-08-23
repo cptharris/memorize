@@ -51,6 +51,6 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
 			// if the total height does not fit, add another column
 			columnCount += 1
 		} while columnCount < count
-		return min(size.width / Double(count), size.height * aspectRatio).rounded(.down)
+		return min(size.width / count, size.height * aspectRatio).rounded(.down)
 	}
 }

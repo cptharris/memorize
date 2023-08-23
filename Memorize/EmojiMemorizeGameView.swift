@@ -13,7 +13,7 @@ struct EmojiMemorizeGameView: View {
 	private let cardAspectRatio: CGFloat = 2/3
 	
 	var body: some View {
-		VStack {
+		VStack(spacing: 0) {
 			Text("Memorize!")
 				.font(.largeTitle)
 			Text(gameKeeper.themeName)
@@ -31,14 +31,22 @@ struct EmojiMemorizeGameView: View {
 	}
 	
 	private var lowerPanelView: some View {
-		HStack {
-			Text("Score: \(gameKeeper.gameScore)").opacity(0)
-			Spacer()
-			Button("New Game") {
-				gameKeeper.reset()
+		ViewThatFits {
+			HStack {
+				Text("Score: \(gameKeeper.gameScore)").opacity(0)
+				Spacer()
+				Button("New Game") {
+					gameKeeper.reset()
+				}
+				Spacer()
+				Text("Score: \(gameKeeper.gameScore)")
 			}
-			Spacer()
-			Text("Score: \(gameKeeper.gameScore)")
+			VStack {
+				Button("New Game") {
+					gameKeeper.reset()
+				}
+				Text("Score: \(gameKeeper.gameScore)")
+			}
 		}
 	}
 	
