@@ -9,11 +9,14 @@ import Foundation
 
 struct MemorizeGame<CardContent> where CardContent: Equatable {
 	private(set) var cards: Array<Card>
+	private let theme: MemorizeGameTheme<CardContent>
 	private(set) var score = 0
 	
-	init(numberOfPairs: Int, cardContentFactory: (Int) -> CardContent?) {
+	init(theme: MemorizeGameTheme<CardContent>, cardContentFactory: (Int) -> CardContent?) {
+		self.theme = theme
+		
 		cards = []
-		for pairIndex in 0..<max(2, numberOfPairs) {
+		for pairIndex in 0..<max(2, self.theme.numPairs) {
 			if let content = cardContentFactory(pairIndex) {
 				cards.append(Card(content: content, id: "\(pairIndex+1)a"))
 				cards.append(Card(content: content, id: "\(pairIndex+1)b"))
@@ -24,7 +27,15 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		shuffle()
 	}
 	
-	var indexOfTheOneAndOnlyFaceUpCard: Int? {
+	var themeName: String {
+		theme.name
+	}
+	
+	var themeHue: Double {
+		theme.hue
+	}
+	
+	private var indexOfTheOneAndOnlyFaceUpCard: Int? {
 		// get indices of cards that are face up, then get the one index if there is only one
 		get { cards.indices.filter { cards[$0].isFaceUp }.only }
 		// look at each card. if the new only face up card is the current card, set the current card to face up. set everything else to face down
@@ -55,7 +66,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 					} else if cards[chosenIndex].wasSeen {
 						score -= 1
 					}
-				// if there is not a face up card yet
+					// if there is not a face up card yet
 				} else {
 					indexOfTheOneAndOnlyFaceUpCard = chosenIndex
 				}
@@ -65,7 +76,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		}
 	}
 	
-	mutating func shuffle() {
+	private mutating func shuffle() {
 		cards.shuffle()
 	}
 	
@@ -74,7 +85,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 	/// MemorizeGame Card type which stores facts about a Card
 	struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 		var debugDescription: String {
-			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not") been seen"
+			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not ")been seen"
 		}
 		
 		mutating func set(toFaceUp: Bool) {

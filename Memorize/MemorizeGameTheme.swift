@@ -5,25 +5,16 @@
 //  Created by Caleb Harris on 8/22/23.
 //
 
-import Foundation
-
 struct MemorizeGameTheme<CardContent> {
 	let name: String
-	let hue: Int
+	let hue: Double
 	let numPairs: Int
 	let contentSet: [CardContent]
 	
-	init(_ theme: EmojiMemorizeGame.Theme<CardContent>) {
-		self.name = theme.name
-		self.hue = theme.hue
-		self.numPairs = theme.numPairs
-		self.contentSet = theme.contentSet.shuffled()
-	}
-	
-	init() {
-		self.name = ""
-		self.hue = -1
-		self.numPairs = -1
-		self.contentSet = []
+	init(_ name: String = "", _ hue: Double = -1, numPairs: Int = -1, _ contentSet: [CardContent] = []) {
+		self.name = name
+		self.hue = hue
+		self.numPairs = numPairs
+		self.contentSet = contentSet.shuffled()
 	}
 }
