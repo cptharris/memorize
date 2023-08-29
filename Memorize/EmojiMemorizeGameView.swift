@@ -10,8 +10,6 @@ import SwiftUI
 struct EmojiMemorizeGameView: View {
 	@ObservedObject var gameKeeper: EmojiMemorizeGame
 	
-	private let cardAspectRatio: CGFloat = 2/3
-	
 	var body: some View {
 		VStack(spacing: 0) {
 			Text("Memorize!")
@@ -27,7 +25,7 @@ struct EmojiMemorizeGameView: View {
 			lowerPanelView
 				.padding(.horizontal)
 		}
-		.padding(10)
+		.padding(Constants.Padding.game)
 	}
 	
 	private var lowerPanelView: some View {
@@ -51,12 +49,20 @@ struct EmojiMemorizeGameView: View {
 	}
 	
 	private var cardsView: some View {
-		AspectVGrid(gameKeeper.getCards, aspectRatio: cardAspectRatio) { card in
+		AspectVGrid(gameKeeper.getCards, aspectRatio: Constants.cardAspectRatio) { card in
 			CardView(card)
-				.padding(2)
+				.padding(Constants.Padding.card)
 				.onTapGesture {
 					gameKeeper.choose(card)
 				}
+		}
+	}
+	
+	private struct Constants {
+		static let cardAspectRatio: CGFloat = 2/3
+		struct Padding {
+			static let game: CGFloat = 10
+			static let card: CGFloat = 2
 		}
 	}
 }
