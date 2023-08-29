@@ -18,6 +18,7 @@
 		E2D2CC5A2A9E587500C5D51E /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC592A9E587500C5D51E /* CardView.swift */; };
 		E2D2CC5C2A9E665A00C5D51E /* TimePie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC5B2A9E665A00C5D51E /* TimePie.swift */; };
 		E2D2CC5E2A9E6EB800C5D51E /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC5D2A9E6EB800C5D51E /* Cardify.swift */; };
+		E2D2CC602A9E872A00C5D51E /* FlyingNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC5F2A9E872A00C5D51E /* FlyingNumber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		E2D2CC592A9E587500C5D51E /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		E2D2CC5B2A9E665A00C5D51E /* TimePie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePie.swift; sourceTree = SOURCE_ROOT; };
 		E2D2CC5D2A9E6EB800C5D51E /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
+		E2D2CC5F2A9E872A00C5D51E /* FlyingNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingNumber.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				E285277B2A9512B600BE4086 /* MemorizeGameTheme.swift */,
 				E2AC8E572A8E841A0020B95D /* MemorizeApp.swift */,
 				E2AC8E592A8E841A0020B95D /* EmojiMemorizeGameView.swift */,
+				E2D2CC5F2A9E872A00C5D51E /* FlyingNumber.swift */,
 				E2D2CC592A9E587500C5D51E /* CardView.swift */,
 				E2AC8E5B2A8E841B0020B95D /* Assets.xcassets */,
 				E2AC8E5D2A8E841B0020B95D /* Preview Content */,
@@ -167,6 +170,7 @@
 				E2D2CC5C2A9E665A00C5D51E /* TimePie.swift in Sources */,
 				E20DF8802A93D18400CEFB98 /* MemorizeGame.swift in Sources */,
 				E20DF8822A93D4D900CEFB98 /* EmojiMemorizeGame.swift in Sources */,
+				E2D2CC602A9E872A00C5D51E /* FlyingNumber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

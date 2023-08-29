@@ -39,7 +39,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		// get indices of cards that are face up, then get the one index if there is only one
 		get { cards.indices.filter { cards[$0].isFaceUp }.only }
 		// look at each card. if the new only face up card is the current card, set the current card to face up. set everything else to face down
-		set { cards.indices.forEach { cards[$0].set(toFaceUp: newValue == $0) } }
+		set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
 	}
 	
 	var gameIsComplete: Bool {
@@ -61,7 +61,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 						if !cards[chosenIndex].wasSeen && !cards[potentialMatchIndex].wasSeen {
 							score += 1
 						}
-					} else if cards[chosenIndex].wasSeen {
+					} else if cards[chosenIndex].wasSeen || cards[potentialMatchIndex].wasSeen {
 						score -= 1
 					}
 					// if there is not a face up card yet
@@ -69,7 +69,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 					indexOfTheOneAndOnlyFaceUpCard = chosenIndex
 				}
 				// show the chosen card
-				cards[chosenIndex].set(toFaceUp: true)
+				cards[chosenIndex].isFaceUp = true
 			}
 		}
 	}
@@ -86,18 +86,13 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not ")been seen"
 		}
 		
-		mutating func set(toFaceUp: Bool) {
-			if toFaceUp {
-				isFaceUp = true
-			} else {
-				if isFaceUp {
+		var isFaceUp = false {
+			didSet {
+				if oldValue && !isFaceUp {
 					wasSeen = true
 				}
-				isFaceUp = false
 			}
 		}
-		
-		var isFaceUp = false
 		var isMatched = false
 		var wasSeen = false
 		let content: CardContent

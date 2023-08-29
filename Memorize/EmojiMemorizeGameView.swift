@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EmojiMemorizeGameView: View {
+	typealias Card = MemorizeGame<String>.Card
 	@ObservedObject var gameKeeper: EmojiMemorizeGame
 	
 	var body: some View {
@@ -20,42 +21,48 @@ struct EmojiMemorizeGameView: View {
 			
 			cardsView
 				.foregroundColor(gameKeeper.themeColor)
-				.animation(.default, value: gameKeeper.getCards)
 			
-			lowerPanelView
-				.padding(.horizontal)
+			HStack {
+				score
+				Spacer()
+				newGame
+			}
+			.padding(.horizontal)
 		}
 		.padding(Constants.Padding.game)
 	}
 	
-	private var lowerPanelView: some View {
-		ViewThatFits {
-			HStack {
-				Text("Score: \(gameKeeper.gameScore)").opacity(0)
-				Spacer()
-				Button("New Game") {
-					gameKeeper.reset()
-				}
-				Spacer()
-				Text("Score: \(gameKeeper.gameScore)")
-			}
-			VStack {
-				Button("New Game") {
-					gameKeeper.reset()
-				}
-				Text("Score: \(gameKeeper.gameScore)")
+	private var score: some View {
+		Text("Score: \(gameKeeper.score)")
+			.animation(nil)
+	}
+	
+	private var newGame: some View {
+		Button("New Game") {
+			// shuffling
+			withAnimation {
+				gameKeeper.reset()
 			}
 		}
+		.buttonStyle(.bordered)
 	}
 	
 	private var cardsView: some View {
 		AspectVGrid(gameKeeper.getCards, aspectRatio: Constants.cardAspectRatio) { card in
 			CardView(card)
 				.padding(Constants.Padding.card)
+				.overlay(FlyingNumber(number: scoreChange(causedBy: card)))
 				.onTapGesture {
-					gameKeeper.choose(card)
+					// card choose
+					withAnimation {
+						gameKeeper.choose(card)
+					}
 				}
 		}
+	}
+	
+	private func scoreChange(causedBy card: Card) -> Int {
+		return 0
 	}
 	
 	private struct Constants {

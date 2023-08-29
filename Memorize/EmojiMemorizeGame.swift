@@ -17,9 +17,10 @@ class EmojiMemorizeGame: ObservableObject {
 	private static func createMemoryGame() -> MemorizeGame<String> {
 		// get a random theme, protect against no themes available
 		let theme = Constants.themes.randomElement() ?? MemorizeGameTheme()
+		let contentSet = theme.contentSet.shuffled()
 		// return a new memorize game with the number of pairs and a shuffled, random selection of the available emojis
 		return MemorizeGame(theme: theme) {
-			return theme.contentSet.indices.contains($0) ? theme.contentSet[$0] : nil
+			return contentSet.indices.contains($0) ? contentSet[$0] : nil
 		}
 	}
 	
@@ -31,7 +32,7 @@ class EmojiMemorizeGame: ObservableObject {
 		Color(hue: game.themeHue/Constants.maxHue, saturation: Constants.saturation, brightness: Constants.brightness)
 	}
 	
-	var gameScore: Int {
+	var score: Int {
 		game.score
 	}
 	
@@ -56,7 +57,7 @@ class EmojiMemorizeGame: ObservableObject {
 		static let saturation: Double = 1
 		static let brightness: Double = 0.8
 		
-		private static let numPairs: Int = 8
+		private static let numPairs: Int = 2
 		static let themes = [
 			MemorizeGameTheme<String>("halloween", 30, numPairs: numPairs, ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]),
 			MemorizeGameTheme<String>("christmas", 0, numPairs: numPairs, ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]),
