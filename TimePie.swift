@@ -2,7 +2,7 @@
 //  TimePie.swift
 //  Memorize
 //
-//  Created by Caleb Harris on 8/29/23.
+//  Created by Captain Harris on 8/29/23.
 //
 
 import SwiftUI
@@ -37,6 +37,4 @@ struct TimePie: Shape {
 		p.addLine(to: center)
 		return p
 	}
-	
-	
 }

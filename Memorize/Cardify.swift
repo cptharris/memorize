@@ -2,11 +2,12 @@
 //  Cardify.swift
 //  Memorize
 //
-//  Created by Caleb Harris on 8/29/23.
+//  Created by Captain Harris on 8/29/23.
 //
 
 import SwiftUI
 
+/// Make a card from any content on its up face. Animate the card when it flips over.
 struct Cardify: ViewModifier, Animatable {
 	init(isFaceUp: Bool) {
 		rotation = isFaceUp ? 0 : 180

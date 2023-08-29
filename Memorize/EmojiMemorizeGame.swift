@@ -2,7 +2,7 @@
 //  EmojiMemoryGame.swift
 //  Memorize
 //
-//  Created by Caleb Harris on 8/21/23.
+//  Created by Captain Harris on 8/21/23.
 //
 
 import SwiftUI
@@ -12,13 +12,9 @@ class EmojiMemorizeGame: ObservableObject {
 	
 	@Published private var game = createMemoryGame()
 	
-	/// Makes a new Memorize Game of Card Content String.
-	/// The emoji set is drawn from the available themes and emojis are randomly selected.
 	private static func createMemoryGame() -> MemorizeGame<String> {
-		// get a random theme, protect against no themes available
 		let theme = Constants.themes.randomElement() ?? MemorizeGameTheme()
 		let contentSet = theme.contentSet.shuffled()
-		// return a new memorize game with the number of pairs and a shuffled, random selection of the available emojis
 		return MemorizeGame(theme: theme) {
 			return contentSet.indices.contains($0) ? contentSet[$0] : nil
 		}
