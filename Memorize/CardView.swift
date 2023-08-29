@@ -17,31 +17,21 @@ struct CardView: View {
 	}
 	
 	var body: some View {
-		let base = RoundedRectangle(cornerRadius: Constants.cornerRadius)
-		ZStack {
-			Group {
-				base.fill(.white)
-				base.strokeBorder(lineWidth: Constants.lineWidth)
-				TimePie(endAngle: .degrees(240))
-					.opacity(Constants.TimePie.opacity)
-					.overlay() {
-						Text(card.content)
-							.font(.system(size: Constants.FontSize.largest))
-							.minimumScaleFactor(Constants.FontSize.scaleFactor)
-							.aspectRatio(1, contentMode: .fit)
-							.multilineTextAlignment(.center)
-					}
-					.padding(Constants.inset)
+		TimePie(endAngle: .degrees(240))
+			.opacity(Constants.TimePie.opacity)
+			.overlay() {
+				Text(card.content)
+					.font(.system(size: Constants.FontSize.largest))
+					.minimumScaleFactor(Constants.FontSize.scaleFactor)
+					.aspectRatio(1, contentMode: .fit)
+					.multilineTextAlignment(.center)
 			}
-			.opacity(card.isFaceUp ? 1 : 0)
-			base.fill().opacity(card.isFaceUp ? 0 : 1)
-		}
-		.opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+			.padding(Constants.inset)
+			.cardify(isFaceUp: card.isFaceUp)
+			.opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
 	}
 	
 	private struct Constants {
-		static let cornerRadius: CGFloat = 12
-		static let lineWidth: CGFloat = 5
 		static let inset: CGFloat = 8
 		struct FontSize {
 			static let largest: CGFloat = 200
@@ -56,7 +46,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
 	typealias Card = CardView.Card
-    static var previews: some View {
+	static var previews: some View {
 		VStack {
 			HStack {
 				CardView(Card(isFaceUp: true, content: "X", id: "test1"))
@@ -67,5 +57,5 @@ struct CardView_Previews: PreviewProvider {
 				CardView(Card(isMatched: true, content: "X", id: "test1"))
 			}
 		}.padding().foregroundColor(.green)
-    }
+	}
 }
