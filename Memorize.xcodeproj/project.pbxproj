@@ -16,6 +16,7 @@
 		E2AC8E5C2A8E841B0020B95D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2AC8E5B2A8E841B0020B95D /* Assets.xcassets */; };
 		E2AC8E5F2A8E841B0020B95D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2AC8E5E2A8E841B0020B95D /* Preview Assets.xcassets */; };
 		E2D2CC5A2A9E587500C5D51E /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC592A9E587500C5D51E /* CardView.swift */; };
+		E2D2CC5C2A9E665A00C5D51E /* TimePie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CC5B2A9E665A00C5D51E /* TimePie.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		E2AC8E5B2A8E841B0020B95D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2AC8E5E2A8E841B0020B95D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E2D2CC592A9E587500C5D51E /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		E2D2CC5B2A9E665A00C5D51E /* TimePie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePie.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 		E2AC8E562A8E841A0020B95D /* Memorize */ = {
 			isa = PBXGroup;
 			children = (
+				E2D2CC5B2A9E665A00C5D51E /* TimePie.swift */,
 				E24C48C12A96844900B261A9 /* AspectVGrid.swift */,
 				E20DF87F2A93D18400CEFB98 /* MemorizeGame.swift */,
 				E20DF8812A93D4D900CEFB98 /* EmojiMemorizeGame.swift */,
@@ -157,6 +160,7 @@
 				E2AC8E582A8E841A0020B95D /* MemorizeApp.swift in Sources */,
 				E24C48C22A96844900B261A9 /* AspectVGrid.swift in Sources */,
 				E285277C2A9512B600BE4086 /* MemorizeGameTheme.swift in Sources */,
+				E2D2CC5C2A9E665A00C5D51E /* TimePie.swift in Sources */,
 				E20DF8802A93D18400CEFB98 /* MemorizeGame.swift in Sources */,
 				E20DF8822A93D4D900CEFB98 /* EmojiMemorizeGame.swift in Sources */,
 			);

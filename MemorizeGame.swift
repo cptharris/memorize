@@ -46,8 +46,6 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		cards.indices.filter { !cards[$0].isMatched }.count == 0
 	}
 	
-	// MARK: - Intents
-	
 	mutating func choose(_ card: Card) {
 		// if chosen card is valid
 		if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}) {

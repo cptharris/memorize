@@ -23,8 +23,6 @@ class EmojiMemorizeGame: ObservableObject {
 		}
 	}
 	
-	// MARK: - Operations
-	
 	var themeName: String {
 		game.themeName.uppercased()
 	}
@@ -44,8 +42,6 @@ class EmojiMemorizeGame: ObservableObject {
 	var getCards: Array<Card> {
 		game.cards
 	}
-	
-	// MARK: - Intents
 	
 	func choose(_ card: Card) {
 		game.choose(card)
