@@ -8,6 +8,7 @@
 import SwiftUI
 
 class EmojiMemorizeGame: ObservableObject {
+	typealias Card = MemorizeGame<String>.Card
 	
 	/// Makes a new Memorize Game of Card Content String.
 	/// The emoji set is drawn from the available themes and emojis are randomly selected.
@@ -41,7 +42,7 @@ class EmojiMemorizeGame: ObservableObject {
 		game.gameIsComplete
 	}
 	
-	var getCards: Array<MemorizeGame<String>.Card> {
+	var getCards: Array<Card> {
 		game.cards
 	}
 	
@@ -51,7 +52,7 @@ class EmojiMemorizeGame: ObservableObject {
 		game.shuffle()
 	}
 	
-	func choose(_ card: MemorizeGame<String>.Card) {
+	func choose(_ card: Card) {
 		game.choose(card)
 	}
 	

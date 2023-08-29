@@ -61,32 +61,6 @@ struct EmojiMemorizeGameView: View {
 	}
 }
 
-/// displays a card
-private struct CardView: View {
-	let card: MemorizeGame<String>.Card
-	
-	init(_ card: MemorizeGame<String>.Card) {
-		self.card = card
-	}
-	
-	var body: some View {
-		let base = RoundedRectangle(cornerRadius: 20)
-		ZStack {
-			Group {
-				base.fill(.white)
-				base.strokeBorder(lineWidth: 5)
-				Text(card.content)
-					.font(.system(size: 200))
-					.minimumScaleFactor(0.01)
-					.aspectRatio(1, contentMode: .fit)
-			}
-			.opacity(card.isFaceUp ? 1 : 0)
-			base.fill().opacity(card.isFaceUp ? 0 : 1)
-		}
-		.opacity(card.isMatched ? 0 : 1)
-	}
-}
-
 struct EmojiMemorizeGameView_Previews: PreviewProvider {
 	static var previews: some View {
 		EmojiMemorizeGameView(gameKeeper: EmojiMemorizeGame())
