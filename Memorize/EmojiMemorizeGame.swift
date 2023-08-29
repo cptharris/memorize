@@ -53,7 +53,7 @@ class EmojiMemorizeGame: ObservableObject {
 		static let saturation: Double = 1
 		static let brightness: Double = 0.8
 		
-		private static let numPairs: Int = 2
+		private static let numPairs: Int = 8
 		static let themes = [
 			MemorizeGameTheme<String>("halloween", 30, numPairs: numPairs, ["👻", "😈", "🎃", "🕷️", "💀", "🕸️", "🙀", "👹", "🧌", "🧟"]),
 			MemorizeGameTheme<String>("christmas", 0, numPairs: numPairs, ["🎁", "🎄", "🎅", "🧝", "🕯️", "❄️", "⛄️", "🦌", "🛷", "🍪"]),
