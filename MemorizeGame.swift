@@ -42,7 +42,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		set { cards.indices.forEach { cards[$0].isFaceUp = (newValue == $0) } }
 	}
 	
-	var gameIsComplete: Bool {
+	private var gameIsComplete: Bool {
 		cards.indices.filter { !cards[$0].isMatched }.count == 0
 	}
 	
@@ -61,8 +61,13 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 						if !cards[chosenIndex].wasSeen && !cards[potentialMatchIndex].wasSeen {
 							score += 1
 						}
-					} else if cards[chosenIndex].wasSeen || cards[potentialMatchIndex].wasSeen {
-						score -= 1
+					} else {
+						if cards[chosenIndex].wasSeen {
+							score -= 1
+						}
+						if cards[potentialMatchIndex].wasSeen {
+							score -= 1
+						}
 					}
 					// if there is not a face up card yet
 				} else {
@@ -70,6 +75,11 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 				}
 				// show the chosen card
 				cards[chosenIndex].isFaceUp = true
+				
+				// if game is complete, hide all card faces
+				if gameIsComplete {
+					cards.indices.forEach({cards[$0].isFaceUp = false})
+				}
 			}
 		}
 	}
@@ -78,14 +88,7 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		cards.shuffle()
 	}
 	
-	// MARK: - Types
-	
-	/// MemorizeGame Card type which stores facts about a Card
-	struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-		var debugDescription: String {
-			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not ")been seen"
-		}
-		
+	struct Card: Equatable, Identifiable, CustomStringConvertible {
 		var isFaceUp = false {
 			didSet {
 				if isFaceUp {
@@ -109,8 +112,12 @@ struct MemorizeGame<CardContent> where CardContent: Equatable {
 		let content: CardContent
 		
 		var id: String
+		var description: String {
+			return "\(id): \(content) is face \(isFaceUp ? "up" : "down"), is \(isMatched ? "" : "un")matched, and has \(wasSeen ? "" : "not ")been seen"
+		}
 		
 		// MARK: Bonus Time
+		// TODO: Clean up
 		
 		// call this when the card transitions to face up state
 		private mutating func startUsingBonusTime() {

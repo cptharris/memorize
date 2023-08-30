@@ -19,7 +19,7 @@ struct EmojiMemorizeGameView: View {
 				.font(.caption)
 				.foregroundColor(gameKeeper.themeColor)
 			
-			cardsView
+			cards
 				.foregroundColor(gameKeeper.themeColor)
 			
 			HStack {
@@ -51,59 +51,29 @@ struct EmojiMemorizeGameView: View {
 		.buttonStyle(.bordered)
 	}
 	
-	private var cardsView: some View {
-		AspectVGrid(gameKeeper.getCards, aspectRatio: Constants.cardAspectRatio) { card in
+	/// Show all cards in an AspectVGrid
+	private var cards: some View {
+		AspectVGrid(gameKeeper.cards, aspectRatio: Constants.cardAspectRatio) { card in
 			if isDealt(card) {
-				CardView(card)
+				CardViewEffect(card)
 					.padding(Constants.Padding.card)
 					.overlay(FlyingNumber(number: scoreChange(causedBy: card)))
 					.zIndex(scoreChange(causedBy: card) != 0 ? 1 : 0) // put on top
 					.onTapGesture {
 						choose(card)
 					}
-					.matchedGeometryEffect(id: card.id, in: dealingNamespace)
-					.transition(.asymmetric(insertion: .identity, removal: .identity))
 			}
 		}
 	}
 	
-	@State private var dealt = Set<Card.ID>()
-	
-	private func isDealt(_ card: Card) -> Bool {
-		dealt.contains(card.id)
+	/// CardView with card deal effect
+	private func CardViewEffect(_ card: Card) -> some View {
+		CardView(card)
+			.matchedGeometryEffect(id: card.id, in: dealingNamespace)
+			.transition(.asymmetric(insertion: .identity, removal: .identity))
 	}
 	
-	private var undealtCards: [Card] {
-		gameKeeper.getCards.filter {!isDealt($0)}
-	}
-	
-	@Namespace private var dealingNamespace
-	
-	private var deck: some View {
-		ZStack {
-			ForEach(undealtCards) { card in
-				CardView(card)
-					.matchedGeometryEffect(id: card.id, in: dealingNamespace)
-					.transition(.asymmetric(insertion: .identity, removal: .identity))
-					.foregroundColor(gameKeeper.themeColor)
-			}
-		}
-		.frame(width: Constants.deckWidth, height: Constants.deckWidth / Constants.cardAspectRatio)
-		.onTapGesture {
-			deal()
-		}
-	}
-	
-	private func deal() {
-		// deal the cards
-		var delay: TimeInterval = 0
-		for card in gameKeeper.getCards {
-			withAnimation(Constants.Deal.animation.delay(delay)) {
-				_ = dealt.insert(card.id)
-			}
-			delay += Constants.Deal.interval
-		}
-	}
+	// MARK: - Choosing Cards
 	
 	private func choose(_ card: Card) {
 		withAnimation {
@@ -119,6 +89,46 @@ struct EmojiMemorizeGameView: View {
 		let (amount, id) = lastScoreChange
 		return card.id == id ? amount : 0
 	}
+	
+	// MARK: - Dealing from Deck
+	
+	@State private var dealt = Set<Card.ID>()
+	
+	private func isDealt(_ card: Card) -> Bool {
+		dealt.contains(card.id)
+	}
+	
+	private var undealtCards: [Card] {
+		gameKeeper.cards.filter { !isDealt($0) }
+	}
+	
+	@Namespace private var dealingNamespace
+	
+	private var deck: some View {
+		ZStack {
+			ForEach(undealtCards) { card in
+				CardViewEffect(card)
+					.foregroundColor(gameKeeper.themeColor)
+			}
+		}
+		.frame(width: Constants.deckWidth, height: Constants.deckWidth / Constants.cardAspectRatio)
+		.onTapGesture {
+			deal()
+		}
+	}
+	
+	private func deal() {
+		// deal the cards
+		var delay: TimeInterval = 0
+		for card in gameKeeper.cards {
+			withAnimation(Constants.Deal.animation.delay(delay)) {
+				_ = dealt.insert(card.id)
+			}
+			delay += Constants.Deal.interval
+		}
+	}
+	
+	// MARK: - Constants
 	
 	private struct Constants {
 		static let cardAspectRatio: CGFloat = 2/3

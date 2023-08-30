@@ -21,7 +21,7 @@ struct TimePie: Shape {
 		let radius = min(rect.width, rect.height) / 2
 		let start = CGPoint(
 			x: center.x + radius * cos(startAngle.radians),
-			y: center.y + radius * cos(startAngle.radians)
+			y: center.y + radius * sin(startAngle.radians)
 		)
 		
 		var p = Path()

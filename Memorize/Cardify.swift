@@ -18,14 +18,15 @@ struct Cardify: ViewModifier, Animatable {
 	}
 	
 	var rotation: Double
+	
 	var animatableData: Double {
 		get { rotation }
 		set { rotation = newValue }
 	}
 	
 	func body(content: Content) -> some View {
-		let base = RoundedRectangle(cornerRadius: Constants.cornerRadius)
 		ZStack {
+			let base = RoundedRectangle(cornerRadius: Constants.cornerRadius)
 			base.strokeBorder(lineWidth: Constants.lineWidth)
 				.background(base.fill(.white))
 				.overlay(content)

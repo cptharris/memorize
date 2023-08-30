@@ -32,11 +32,7 @@ class EmojiMemorizeGame: ObservableObject {
 		game.score
 	}
 	
-	var gameIsComplete: Bool {
-		game.gameIsComplete
-	}
-	
-	var getCards: Array<Card> {
+	var cards: Array<Card> {
 		game.cards
 	}
 	
